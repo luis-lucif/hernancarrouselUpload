@@ -9,8 +9,8 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #283048;
-    background: linear-gradient(to right, #859398, #283048);
+  /*  background: #283048;*/
+   /* background: linear-gradient(to right, #859398, #283048);*/
     padding: 20px; 
     
 }
