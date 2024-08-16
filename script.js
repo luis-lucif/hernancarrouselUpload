@@ -1,78 +1,110 @@
-const btnLeft = document.querySelector(".btn-left"),
-      btnRight = document.querySelector(".btn-right"),
-      slider = document.querySelector("#slider"),
-      sliderSection = document.querySelectorAll(".slider-section");
 
+        const btnLeft = document.querySelector(".btn-left"),
+              btnRight = document.querySelector(".btn-right"),
+              slider = document.querySelector("#slider"),
+              imageInput = document.getElementById("imageInput");
 
-btnLeft.addEventListener("click", e => moveToLeft())
-btnRight.addEventListener("click", e => moveToRight())
+        let selectedImageIndex = null;
 
-setInterval(() => {
-    moveToRight()
-}, 5000);
+        function loadCarouselImages() {
+            const defaultImages = [
+                "img/1.png", "img/2.png", "img/3.png", "img/4.png"
+            ];
 
+            let index = 0;
+            let imageData;
+            let loadedImages = [];
 
-let operacion = 0,
-    counter = 0,
-    widthImg = 100 / sliderSection.length;
+            slider.innerHTML = ''; // Limpiar cualquier contenido anterior
 
-function moveToRight() {
-    if (counter >= sliderSection.length-1) {
-        counter = 0;
-        operacion = 0;
-        slider.style.transform = `translate(-${operacion}%)`;
-        slider.style.transition = "none";
-        return;
-    } 
-    counter++;
-    operacion = operacion + widthImg;
-    slider.style.transform = `translate(-${operacion}%)`;
-    slider.style.transition = "all ease 2s"
-    
-}  
+            while ((imageData = localStorage.getItem(`image_${index}`)) !== null || index < 4) {
+                if (imageData) {
+                    loadedImages.push(imageData);
+                } else {
+                    loadedImages.push(defaultImages[index]);
+                }
+                index++;
+            }
 
-function moveToLeft() {
-    counter--;
-    if (counter < 0 ) {
-        counter = sliderSection.length-1;
-        operacion = widthImg * (sliderSection.length-1)
-        slider.style.transform = `translate(-${operacion}%)`;
-        slider.style.transition = "none";
-        return;
-    } 
-    operacion = operacion - widthImg;
-    slider.style.transform = `translate(-${operacion}%)`;
-    slider.style.transition = "all ease .6s"
-    
-    
-}   
+            loadedImages.forEach((imgSrc, idx) => {
+                const section = document.createElement('section');
+                section.classList.add('slider-section');
 
+                const img = document.createElement('img');
+                img.src = imgSrc;
+                img.setAttribute('data-index', idx);
+                img.style.cursor = 'pointer';
 
-    /*function moveToRight() {
-        if (counter >= sliderSection.length - 1) {
-            counter = 0;
-            operacion = 0;
-            slider.style.transform = `translate(-${operacion}%)`;
-            slider.style.transition = "none";
-            return;
+                // Evento para reemplazar imagen
+                img.addEventListener('click', () => {
+                    selectedImageIndex = idx;
+                    imageInput.click(); // Abrir el selector de archivos
+                });
+
+                section.appendChild(img);
+                slider.appendChild(section);
+            });
+
+            initializeCarousel();
         }
-        counter++;
-        operacion = operacion + widthImg;
-        slider.style.transform = `translate(-${operacion}%)`;
-        slider.style.transition = "transform 3s cubic-bezier(0.68, -0.55, 0.27, 1.55)";
-    }
-    
-    function moveToLeft() {
-        counter--;
-        if (counter < 0) {
-            counter = sliderSection.length - 1;
-            operacion = widthImg * (sliderSection.length - 1);
-            slider.style.transform = `translate(-${operacion}%)`;
-            slider.style.transition = "none";
-            return;
+
+        // Reemplazar imagen seleccionada
+        imageInput.addEventListener('change', function () {
+            const file = this.files[0];
+
+            if (file && selectedImageIndex !== null) {
+                const reader = new FileReader();
+                
+                reader.onload = function (event) {
+                    const imgElement = document.querySelector(`[data-index='${selectedImageIndex}']`);
+                    imgElement.src = event.target.result;
+
+                    // Guardar la nueva imagen en localStorage
+                    localStorage.setItem(`image_${selectedImageIndex}`, event.target.result);
+                };
+
+                reader.readAsDataURL(file); // Leer la imagen como base64
+            }
+        });
+
+        function initializeCarousel() {
+            const sliderSections = document.querySelectorAll(".slider-section");
+            let operacion = 0, counter = 0;
+            let widthImg = 100 / sliderSections.length;
+
+            function moveToRight() {
+                if (counter >= sliderSections.length - 1) {
+                    counter = 0;
+                    operacion = 0;
+                    slider.style.transform = `translate(-${operacion}%)`;
+                    slider.style.transition = "none";
+                    return;
+                }
+                counter++;
+                operacion = operacion + widthImg;
+                slider.style.transform = `translate(-${operacion}%)`;
+                slider.style.transition = "all ease 2s";
+            }
+
+            function moveToLeft() {
+                counter--;
+                if (counter < 0) {
+                    counter = sliderSections.length - 1;
+                    operacion = widthImg * (sliderSections.length - 1);
+                    slider.style.transform = `translate(-${operacion}%)`;
+                    slider.style.transition = "none";
+                    return;
+                }
+                operacion = operacion - widthImg;
+                slider.style.transform = `translate(-${operacion}%)`;
+                slider.style.transition = "all ease .6s";
+            }
+
+            btnLeft.addEventListener("click", moveToLeft);
+            btnRight.addEventListener("click", moveToRight);
+
+            setInterval(moveToRight, 5000);
         }
-        operacion = operacion - widthImg;
-        slider.style.transform = `translate(-${operacion}%)`;
-        slider.style.transition = "transform 1s cubic-bezier(0.68, -0.55, 0.27, 1.55)";
-    }*/
-    
+
+        window.onload = loadCarouselImages;
+   
