@@ -4,42 +4,40 @@
     box-sizing: border-box;
 }
 
+body, html {
+    height: 100%;
+    width: 100%;
+}
+
 body {
-    height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     background: #283048;
     background: linear-gradient(to right, #859398, #283048);
-    padding: 20px; 
+    padding: 0;
 }
 
 .container-carousel {
     position: relative;
-    width: 100%;  /* Se ajusta a todo el ancho de la ventana */
-    height: 70%; 
-    border-radius: 15px;
+    width: 100%;
+    height: 100vh; /* Ocupa toda la altura de la pantalla */
     overflow: hidden;
-    -webkit-box-reflect: below -250px linear-gradient(transparent, transparent, rgba(4, 4, 4, 0.267));
 }
 
 .carruseles {
     width: 400%; /* 4 imágenes, por lo tanto 400% de ancho total */
     height: 100%;
     display: flex;
-    transition: transform 0.6s ease; /* Transición suave para el desplazamiento */
+    transition: transform 0.6s ease;
 }
 
 .slider-section {
-    width: calc(100% / 4); /* 25% del contenedor total para cada imagen */
+    width: calc(100% / 4); /* 25% del ancho total */
     height: 100%;
-}
-
-.slider-section img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    border-radius: 15px;
+    background-size: cover; /* Ajusta la imagen para cubrir todo el contenedor */
+    background-position: center; /* Centra la imagen dentro del contenedor */
+    background-repeat: no-repeat;
 }
 
 .btn-left,
@@ -47,14 +45,14 @@ body {
     display: flex;
     position: absolute;
     top: 50%;
-    font-size: 1.5rem;
+    font-size: 2rem;
     background-color: transparent;
     border-radius: 50%;
-    padding: 5px;
+    padding: 10px;
     font-weight: 600;
     cursor: pointer;
     color: #ffffff81;
-    transform: translate(0,-50%);
+    transform: translate(0, -50%);
     transition: .5s ease;
     user-select: none;
 }
@@ -66,31 +64,9 @@ body {
 }
 
 .btn-left {
-    left: 10px;
+    left: 20px;
 }
 
 .btn-right {
-    right: 10px;
-}
-
-/* ---- Subida de Imágenes -----*/
-
-#imageContainer {
-    margin-bottom: 20px;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-.uploaded-image {
-    width: 150px;
-    height: 150px;
-    margin: 10px;
-    object-fit: cover;
-    border: 2px solid #ddd;
-    border-radius: 10px;
-}
-
-form {
-    margin-top: 20px;
+    right: 20px;
 }
