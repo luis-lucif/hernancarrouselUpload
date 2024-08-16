@@ -16,7 +16,7 @@ let operacion = 0,
     counter = 0,
     widthImg = 100 / sliderSection.length;
 
-/*function moveToRight() {
+function moveToRight() {
     if (counter >= sliderSection.length-1) {
         counter = 0;
         operacion = 0;
@@ -45,10 +45,10 @@ function moveToLeft() {
     slider.style.transition = "all ease .6s"
     
     
-}   */
+}   
 
 
-    function moveToRight() {
+    /*function moveToRight() {
         if (counter >= sliderSection.length - 1) {
             counter = 0;
             operacion = 0;
@@ -74,5 +74,5 @@ function moveToLeft() {
         operacion = operacion - widthImg;
         slider.style.transform = `translate(-${operacion}%)`;
         slider.style.transition = "transform 1s cubic-bezier(0.68, -0.55, 0.27, 1.55)";
-    }
+    }*/
     
